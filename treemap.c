@@ -171,5 +171,22 @@ Pair * firstTreeMap(TreeMap * tree) {
 }
 
 Pair * nextTreeMap(TreeMap * tree) {
-    return NULL;
+    if (!tree || !tree->current) return NULL;
+    TreeNode *node = tree->current;
+
+    if (node->right) {
+        node = minimum(node->right);
+    } else {
+        TreeNode *parent = node->parent;
+        //iteracion hasta salir de la profundidad actual del nodo
+        while (parent && node == parent->right) {
+            node = parent;
+            parent = parent->parent;
+        }
+        node = parent;
+    }
+
+    tree->current = node;
+    if (!node) return NULL;
+    return node->pair;
 }
